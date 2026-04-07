@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register | TradeSphere</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0a2e18;
+            --accent: #00ff87;
+            --glass: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.2);
+            --error: #ff6b6b;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0a2e18;
+            /* Animated gradient background */
+            background: linear-gradient(-45deg, #0a2e18, #11998e, #1a4d2b, #00ff87);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Glass Card */
+        .card {
+            width: 100%;
+            max-width: 420px;
+            padding: 50px 40px;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(25px) saturate(150%);
+            -webkit-backdrop-filter: blur(25px) saturate(150%);
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            color: white;
+            animation: slideUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card h2 {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 8px;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 15px;
+            margin-bottom: 35px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Input Fields */
+        .input-container {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s ease;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        input:focus {
+            border-color: var(--accent);
+            background: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 15px rgba(0, 255, 135, 0.1);
+        }
+
+        .password-box {
+            position: relative;
+        }
+
+        .password-box .toggle-btn {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            opacity: 0.5;
+            transition: 0.2s;
+            user-select: none;
+        }
+
+        .password-box .toggle-btn:hover {
+            opacity: 1;
+        }
+
+        /* Action Button */
+        button {
+            width: 100%;
+            padding: 16px;
+            margin-top: 20px;
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(0, 255, 135, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            background: #fff;
+            box-shadow: 0 15px 25px rgba(0, 255, 135, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Status Messaging */
+        #msg {
+            margin-top: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            min-height: 20px;
+            border-radius: 8px;
+            padding: 5px;
+        }
+
+        .login-link {
+            margin-top: 30px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .login-link a {
+            color: var(--accent);
+            font-weight: 700;
+            text-decoration: none;
+            margin-left: 5px;
+            transition: 0.2s;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>🌿 TradeSphere</h2>
+    <p class="subtitle">Join the digital agriculture revolution</p>
+
+    <div class="input-container">
+        <input id="username" placeholder="Choose a Username">
+    </div>
+
+    <div class="input-container password-box">
+        <input id="password" type="password" placeholder="Create Password">
+        <span class="toggle-btn" onclick="togglePassword('password')">👁️</span>
+    </div>
+
+    <div class="input-container password-box">
+        <input id="confirmPassword" type="password" placeholder="Confirm Password">
+        <span class="toggle-btn" onclick="togglePassword('confirmPassword')">👁️</span>
+    </div>
+
+    <button onclick="register()">Create Account</button>
+
+    <div id="msg"></div>
+
+    <div class="login-link">
+        Already part of the sphere?
+        <a href="login.html">Sign In</a>
+    </div>
+</div>
+
+<script>
+function togglePassword(id){
+    let field = document.getElementById(id);
+    field.type = field.type === "password" ? "text" : "password";
+}
+
+function register() {
+    const userField = document.getElementById("username");
+    const passField = document.getElementById("password");
+    const confirmField = document.getElementById("confirmPassword");
+    const msg = document.getElementById("msg");
+
+    // Logic Check
+    if(!userField.value || !passField.value){
+        msg.style.color = "#ffdd59";
+        msg.innerText = "Please fill in all fields.";
+        return;
+    }
+
+    if(passField.value !== confirmField.value){
+        msg.style.color = "#ffdd59";
+        msg.innerText = "Passwords do not match!";
+        return;
+    }
+
+    // Backend Request
+    fetch("http://localhost:5000/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            username: userField.value,
+            password: passField.value
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.message.includes("successful")){
+            msg.style.color = "#00ff87";
+            msg.innerText = "Success! Redirecting to login...";
+            setTimeout(()=>{
+                window.location.href = "login.html";
+            }, 1500);
+        } else {
+            msg.style.color = "#ff6b6b";
+            msg.innerText = data.message || "Registration failed!";
+        }
+    })
+    .catch(()=>{
+        msg.style.color = "#ff6b6b";
+        msg.innerText = "⚠️ Server connection lost!";
+    });
+}
+</script>
+
+</body>
+</html>

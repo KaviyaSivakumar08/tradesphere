@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeSphere | Digital Agriculture Marketplace</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0a2e18;
+            --accent: #00ff87;
+            --text-light: rgba(255, 255, 255, 0.9);
+            --glass: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #0a2e18;
+            /* Multi-layer mesh gradient for a high-end feel */
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(145,72%,39%,1) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(158,82%,57%,1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(168,84%,45%,1) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* --- Navbar --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 8%;
+            background: rgba(10, 46, 24, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span { color: var(--accent); }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            margin-left: 35px;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0%;
+            height: 2px;
+            background: var(--accent);
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: white; }
+
+        /* --- Hero Section --- */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 120px 8% 80px;
+            position: relative;
+        }
+
+        .hero h1 {
+            font-size: clamp(36px, 6vw, 72px);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 25px;
+            max-width: 900px;
+            letter-spacing: -2px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(to right, var(--accent), #fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 650px;
+            margin-bottom: 45px;
+            line-height: 1.6;
+        }
+
+        .hero-btns {
+            display: flex;
+            gap: 20px;
+        }
+
+        .btn {
+            padding: 18px 40px;
+            border-radius: 16px;
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--primary);
+            box-shadow: 0 10px 25px rgba(0, 255, 135, 0.25);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid var(--border);
+            backdrop-filter: blur(10px);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            background: white;
+            color: var(--primary);
+        }
+
+        /* --- Feature Cards --- */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 80px 8%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: left;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--accent);
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(0, 255, 135, 0.3);
+        }
+
+        .feature-card:hover::before { opacity: 1; }
+
+        .icon-box {
+            width: 60px;
+            height: 60px;
+            background: rgba(0, 255, 135, 0.1);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            margin-bottom: 25px;
+        }
+
+        .feature-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .feature-card p {
+            font-size: 15px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.7;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 60px 8%;
+            background: rgba(0, 0, 0, 0.2);
+            margin-top: 50px;
+            border-top: 1px solid var(--border);
+        }
+
+        footer p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 1px;
+        }
+
+        /* --- Responsive --- */
+        @media(max-width: 768px) {
+            nav { padding: 20px 5%; }
+            .hero { padding: 80px 5%; }
+            .hero-btns { flex-direction: column; width: 100%; }
+            .btn { text-align: center; }
+        }
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <div class="logo">🌾 Trade<span>Sphere</span></div>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="login.html">Login</a>
+    </div>
+</nav>
+
+<section class="hero">
+    <h1>Connecting <span>Agriculture</span> with Modern Trade</h1>
+    <p>The world’s most transparent marketplace where farmers meet buyers directly for better profits and fresher produce.</p>
+    <div class="hero-btns">
+        <a href="register.html" class="btn btn-primary">Start Trading Now</a>
+        <a href="about.html" class="btn btn-secondary">Learn More</a>
+    </div>
+</section>
+
+<section class="features">
+    <div class="feature-card">
+        <div class="icon-box">🌾</div>
+        <h3>Direct Sourcing</h3>
+        <p>Eliminate unnecessary middlemen. Connect directly with verified growers to ensure maximum freshness and quality.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="icon-box">💰</div>
+        <h3>Market Transparency</h3>
+        <p>Real-time market rates and open bidding systems ensure fair prices for both the hardworking farmer and the buyer.</p>
+    </div>
+
+    <div class="feature-card">
+        <div class="icon-box">⚡</div>
+        <h3>Rapid Fulfilment</h3>
+        <p>Optimized digital workflows make listing, buying, and transacting crops faster than traditional market cycles.</p>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 TRADESPHERE | REDEFINING THE AGRICULTURAL ECOSYSTEM</p>
+</footer>
+
+</body>
+</html>

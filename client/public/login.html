@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | TradeSphere</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0a2e18;
+            --accent: #00ff87;
+            --glass: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Animated Mesh Gradient to match the rest of the site */
+            background: #0a2e18;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(145,72%,39%,1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(168,84%,45%,1) 0px, transparent 50%);
+            overflow: hidden;
+        }
+
+        /* Login Card */
+        .card {
+            width: 100%;
+            max-width: 400px;
+            padding: 50px 40px;
+            border-radius: 30px;
+            background: var(--glass);
+            backdrop-filter: blur(25px) saturate(160%);
+            -webkit-backdrop-filter: blur(25px) saturate(160%);
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            color: white;
+            animation: fadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card h2 {
+            margin-bottom: 10px;
+            font-size: 32px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 35px;
+        }
+
+        /* Input Styling */
+        .input-group {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s ease;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        input:focus {
+            border-color: var(--accent);
+            background: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 15px rgba(0, 255, 135, 0.1);
+        }
+
+        .password-box {
+            position: relative;
+        }
+
+        .password-box .toggle-eye {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 18px;
+            opacity: 0.5;
+            transition: 0.3s;
+            user-select: none;
+        }
+
+        .password-box .toggle-eye:hover {
+            opacity: 1;
+        }
+
+        /* Button */
+        button {
+            width: 100%;
+            padding: 16px;
+            margin-top: 15px;
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(0, 255, 135, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            background: #fff;
+            box-shadow: 0 15px 25px rgba(0, 255, 135, 0.3);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .footer-text {
+            margin-top: 30px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .footer-text a {
+            color: var(--accent);
+            font-weight: 700;
+            text-decoration: none;
+            margin-left: 5px;
+        }
+
+        .footer-text a:hover {
+            text-decoration: underline;
+        }
+
+        #msg {
+            margin-top: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #ff6b6b;
+            min-height: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2>🌿 TradeSphere</h2>
+    <p class="subtitle">Welcome back! Please enter your details.</p>
+
+    <div class="input-group">
+        <input id="username" type="text" placeholder="Username">
+    </div>
+
+    <div class="input-group password-box">
+        <input id="password" type="password" placeholder="Password">
+        <span class="toggle-eye" onclick="togglePassword()">👁️</span>
+    </div>
+
+    <button onclick="login()">Sign In</button>
+
+    <div id="msg"></div>
+
+    <p class="footer-text">New user? <a href="register.html">Create an account</a></p>
+</div>
+
+<script>
+    function togglePassword(){
+        let pass = document.getElementById("password");
+        pass.type = pass.type === "password" ? "text" : "password";
+    }
+
+    function login() {
+        const usernameInput = document.getElementById("username").value;
+        const passwordInput = document.getElementById("password").value;
+        const msg = document.getElementById("msg");
+
+        // Simple validation before fetch
+        if(!usernameInput || !passwordInput) {
+            msg.innerText = "Please fill in all fields.";
+            return;
+        }
+
+        fetch("http://localhost:5000/api/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username: usernameInput,
+                password: passwordInput
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.user) {   
+                localStorage.setItem("username", data.user.username);
+                msg.style.color = "#00ff87";
+                msg.innerText = "Login successful! Entering sphere...";
+                setTimeout(() => {
+                    window.location.href = "choose.html";
+                }, 1000);
+            } else {
+                msg.style.color = "#ff6b6b";
+                msg.innerText = data.message || "Invalid credentials!";
+            }
+        })
+        .catch(() => {
+            msg.style.color = "#ff6b6b";
+            msg.innerText = "⚠️ Server connection lost!";
+        });
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Cart | TradeSphere</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0a2e18;
+            --accent: #00ff87;
+            --danger: #ff5e57;
+            --glass: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #0a2e18;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(145,72%,39%,1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(168,84%,45%,1) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: white;
+            padding: 40px 20px 120px; /* Space for the fixed bottom bar */
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 40px;
+            letter-spacing: -1px;
+        }
+
+        .cart-container {
+            max-width: 800px;
+            margin: auto;
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Individual Item Card --- */
+        .cart-item {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.3s ease;
+        }
+
+        .cart-item:hover {
+            border-color: var(--accent);
+            transform: scale(1.01);
+        }
+
+        .item-info h3 {
+            font-size: 20px;
+            margin-bottom: 5px;
+            color: var(--accent);
+        }
+
+        .item-info p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin: 2px 0;
+        }
+
+        .item-price {
+            text-align: right;
+        }
+
+        .item-price .total-line {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        /* --- Buttons --- */
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .remove-btn {
+            background: rgba(255, 94, 87, 0.1);
+            color: var(--danger);
+            border: 1px solid rgba(255, 94, 87, 0.3);
+        }
+
+        .remove-btn:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        /* --- Checkout Bar (Sticky Bottom) --- */
+        .checkout-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10, 46, 24, 0.8);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid var(--border);
+            padding: 25px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .total-section h2 {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .total-section p {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .checkout-btn {
+            background: var(--accent);
+            color: var(--primary);
+            padding: 15px 45px;
+            font-size: 16px;
+            font-weight: 800;
+            box-shadow: 0 10px 20px rgba(0, 255, 135, 0.2);
+        }
+
+        .checkout-btn:hover {
+            background: white;
+            transform: translateY(-3px);
+        }
+
+        /* Empty State */
+        .empty-cart {
+            text-align: center;
+            padding: 100px 20px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .empty-cart span {
+            font-size: 60px;
+            display: block;
+            margin-bottom: 20px;
+        }
+
+        @media(max-width: 600px) {
+            .cart-item { flex-direction: column; text-align: center; gap: 20px; }
+            .item-price { text-align: center; }
+            .checkout-bar { flex-direction: column; gap: 15px; text-align: center; }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="cart-container">
+    <h1>🛒 Your Selection</h1>
+    
+    <div id="cartItems">
+        </div>
+</div>
+
+<div class="checkout-bar" id="checkoutBar">
+    <div class="total-section">
+        <h2>Grand Total</h2>
+        <p id="totalPrice">₹0</p>
+    </div>
+    <div class="actions">
+        <button class="checkout-btn" onclick="checkout()">Place Order Now</button>
+    </div>
+</div>
+
+<script>
+function loadCart(){
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    const container = document.getElementById("cartItems");
+    const checkoutBar = document.getElementById("checkoutBar");
+    container.innerHTML = "";
+
+    if (cart.length === 0) {
+        container.innerHTML = `
+            <div class="empty-cart">
+                <span>🌾</span>
+                <p>Your cart is empty.</p>
+                <button style="margin-top:20px; background:white; color:#0a2e18;" onclick="window.location.href='buyer.html'">Browse Crops</button>
+            </div>
+        `;
+        checkoutBar.style.display = "none";
+        return;
+    }
+
+    checkoutBar.style.display = "flex";
+    let total = 0;
+
+    cart.forEach((item, index) => {
+        let itemTotal = item.quantity * item.pricePerKg;
+        total += itemTotal;
+
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'cart-item';
+        itemDiv.innerHTML = `
+            <div class="item-info">
+                <h3>${item.cropName}</h3>
+                <p>🧑‍🌾 Farmer: <b>${item.farmerName}</b></p>
+                <p>📦 Quantity: <b>${item.quantity} kg</b></p>
+                <p>🏷️ Rate: ₹${item.pricePerKg} / kg</p>
+            </div>
+            <div class="item-price">
+                <div class="total-line">₹${itemTotal}</div>
+                <button class="remove-btn" onclick="removeItem(${index})">Remove Item</button>
+            </div>
+        `;
+        container.appendChild(itemDiv);
+    });
+
+    document.getElementById("totalPrice").innerText = "₹" + total.toLocaleString();
+}
+
+function removeItem(index){
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.splice(index, 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    
+    // Add a quick fade out effect if you wanted, but simple reload works best
+    loadCart();
+}
+
+function checkout(){
+    if(confirm("Confirm your order on TradeSphere?")) {
+        alert("✅ Order placed successfully! Our farmers are getting your harvest ready.");
+        localStorage.removeItem("cart");
+        loadCart();
+        window.location.href = "choose.html"; // Redirect to dashboard
+    }
+}
+
+// Initial load
+loadCart();
+</script>
+
+</body>
+</html>

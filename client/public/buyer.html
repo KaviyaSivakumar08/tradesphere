@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Buyer Dashboard | TradeSphere</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0a2e18;
+            --accent: #00ff87;
+            --glass: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #0a2e18;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(145,72%,39%,1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(168,84%,45%,1) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: white;
+            padding-bottom: 60px;
+        }
+
+        /* --- Modern Navbar --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: rgba(10, 46, 24, 0.7);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .nav-logo {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .nav-logo span { color: var(--accent); }
+
+        .nav-actions { display: flex; gap: 12px; }
+
+        nav button {
+            padding: 10px 18px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--glass);
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        nav button:hover {
+            background: white;
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* --- Header Section --- */
+        header {
+            text-align: center;
+            padding: 60px 20px 40px;
+        }
+
+        header h1 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 25px;
+            letter-spacing: -1px;
+        }
+
+        /* --- Search Bar --- */
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto 50px;
+            position: relative;
+        }
+
+        .search-container input {
+            width: 100%;
+            padding: 16px 25px;
+            border-radius: 50px;
+            border: 1px solid var(--border);
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+            backdrop-filter: blur(5px);
+        }
+
+        .search-container input:focus {
+            border-color: var(--accent);
+            background: rgba(0, 0, 0, 0.4);
+            box-shadow: 0 0 20px rgba(0, 255, 135, 0.15);
+        }
+
+        /* --- Crop Grid --- */
+        .container {
+            width: 85%;
+            max-width: 1200px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        /* --- Crop Card --- */
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(20px) saturate(160%);
+            border: 1px solid var(--border);
+            padding: 30px;
+            border-radius: 24px;
+            color: white;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .card h3 {
+            font-size: 22px;
+            margin-bottom: 12px;
+            font-weight: 700;
+        }
+
+        .card .info {
+            margin-bottom: 20px;
+        }
+
+        .card p {
+            font-size: 14px;
+            margin: 6px 0;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .card b { color: white; }
+
+        .price-tag {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--accent);
+            margin: 10px 0;
+        }
+
+        /* --- Add to Cart Button --- */
+        .add-btn {
+            width: 100%;
+            padding: 14px;
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 15px;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .add-btn:hover {
+            background: white;
+            transform: scale(1.02);
+        }
+
+        /* --- Empty State --- */
+        .no-data {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 100px;
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+    </style>
+</head>
+
+<body>
+
+<nav>
+    <div class="nav-logo">🌾 Trade<span>Sphere</span></div>
+    <div class="nav-actions">
+        <button onclick="window.location.href='cart.html'">🛒 My Cart</button>
+        <button onclick="logout()">Logout</button>
+    </div>
+</nav>
+
+<header>
+    <h1>Available Harvests</h1>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search by crop name (e.g. Wheat)..." onkeyup="filterCrops()">
+    </div>
+</header>
+
+<div class="container" id="cropList">
+    </div>
+
+<script>
+let cropsData = [];
+
+// Fetching Logic (Same as yours)
+fetch('http://localhost:5000/api/crops')
+.then(res => res.json())
+.then(data => {
+    cropsData = data;
+    displayCrops(data);
+})
+.catch(()=>{
+    document.getElementById("cropList").innerHTML = "<div class='no-data'>⚠️ Connection failed. Please check if the server is running.</div>";
+});
+
+function displayCrops(data){
+    const list = document.getElementById('cropList');
+    list.innerHTML = "";
+
+    if(data.length === 0) {
+        list.innerHTML = "<div class='no-data'>No crops found matching your search.</div>";
+        return;
+    }
+
+    data.forEach(crop => {
+        const div = document.createElement('div');
+        div.className = 'card';
+
+        div.innerHTML = `
+            <div>
+                <h3>${crop.cropName}</h3>
+                <div class="info">
+                    <p>Farmer: <b>${crop.farmerName}</b></p>
+                    <p>Stock: <b>${crop.quantity} kg</b></p>
+                </div>
+                <div class="price-tag">₹${crop.pricePerKg} <small style="font-size:12px; color:white;">/ kg</small></div>
+            </div>
+            <button class="add-btn" onclick="addToCart('${crop.cropName}', '${crop.farmerName}', ${crop.pricePerKg})">
+                Add To Cart
+            </button>
+        `;
+
+        list.appendChild(div);
+    });
+}
+
+function filterCrops(){
+    const search = document.getElementById('searchInput').value.toLowerCase();
+    const filtered = cropsData.filter(crop =>
+        crop.cropName.toLowerCase().includes(search)
+    );
+    displayCrops(filtered);
+}
+
+function addToCart(name, farmer, price) {
+    const qty = prompt(`How many kg of ${name} would you like to buy?`);
+
+    if (!qty || isNaN(qty) || qty <= 0) {
+        if (qty !== null) alert("Please enter a valid quantity.");
+        return;
+    }
+
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    cart.push({
+        cropName: name,
+        farmerName: farmer,
+        quantity: Number(qty),
+        pricePerKg: price,
+        dateAdded: new Date().toLocaleDateString()
+    });
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert(`✅ ${qty}kg of ${name} added to cart!`);
+}
+
+function logout(){
+    localStorage.removeItem("username");
+    window.location.href = "login.html";
+}
+</script>
+
+</body>
+</html>

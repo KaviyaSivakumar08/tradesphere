@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Seller Hub | TradeSphere</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0a2e18;
+            --accent: #00ff87;
+            --glass-white: rgba(255, 255, 255, 0.12);
+            --border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            /* Modern Mesh Gradient Background */
+            background-color: #0a2e18;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(145,72%,39%,1) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, hsla(158,82%,57%,1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(168,84%,45%,1) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, hsla(140,65%,28%,1) 0px, transparent 50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Top Bar & Logout */
+        .top-bar {
+            position: absolute;
+            top: 30px;
+            right: 40px;
+        }
+
+        .logout {
+            padding: 10px 20px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--glass-white);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .logout:hover {
+            background: white;
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Frosted Glass Card */
+        .card {
+            width: 100%;
+            max-width: 450px;
+            padding: 50px 40px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
+            border-radius: 32px;
+            border: 1px solid var(--border);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            color: white;
+            text-align: center;
+        }
+
+        .card h2 {
+            margin-bottom: 10px;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 35px;
+        }
+
+        /* Input Styling */
+        .input-group {
+            position: relative;
+            margin-bottom: 18px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            font-size: 15px;
+            color: white;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        input:focus {
+            border-color: var(--accent);
+            background: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 15px rgba(0, 255, 135, 0.1);
+        }
+
+        /* Button Styling */
+        button.main-btn {
+            width: 100%;
+            padding: 16px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--accent), #00b894);
+            color: var(--primary);
+            font-weight: 800;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(0, 255, 135, 0.2);
+        }
+
+        button.main-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 255, 135, 0.3);
+            filter: brightness(1.1);
+        }
+
+        button.main-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Status Messages */
+        #msg {
+            margin-top: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            min-height: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        @media(max-width: 480px) {
+            .card { padding: 40px 25px; }
+            .top-bar { top: 15px; right: 15px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-bar">
+    <button class="logout" onclick="logout()">Logout</button>
+</div>
+
+<div class="card">
+    <h2>🌱 Seller Hub</h2>
+    <p>List your harvest on the global marketplace</p>
+
+    <div class="input-group">
+        <input id="farmerName" type="text" placeholder="Farmer Name">
+    </div>
+    <div class="input-group">
+        <input id="cropName" type="text" placeholder="Crop Name (e.g. Organic Wheat)">
+    </div>
+    <div class="input-group">
+        <input id="quantity" type="number" placeholder="Total Quantity (kg)">
+    </div>
+    <div class="input-group">
+        <input id="price" type="number" placeholder="Price per kg ($)">
+    </div>
+
+    <button class="main-btn" onclick="sellCrop()">List Crop for Sale</button>
+
+    <div id="msg"></div>
+</div>
+
+<script>
+    // Authentication Logic (Kept Original)
+    const username = localStorage.getItem("username");
+    if(!username){
+        window.location.href = "login.html";
+    }
+
+    function sellCrop() {
+        const farmerName = document.getElementById("farmerName").value;
+        const cropName = document.getElementById("cropName").value;
+        const quantity = document.getElementById("quantity").value;
+        const pricePerKg = document.getElementById("price").value;
+        const msgDiv = document.getElementById("msg");
+
+        if(!farmerName || !cropName || !quantity || !pricePerKg){
+            msgDiv.innerText = "⚠️ Please fill all fields";
+            msgDiv.style.color = "#ffdd59";
+            msgDiv.style.background = "rgba(255, 221, 89, 0.1)";
+            return;
+        }
+
+        fetch("http://localhost:5000/api/add-crop", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                farmerName,
+                cropName,
+                quantity,
+                pricePerKg
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            msgDiv.innerText = "✅ Crop listed successfully!";
+            msgDiv.style.color = "#00ff87";
+            msgDiv.style.background = "rgba(0, 255, 135, 0.1)";
+            // Clear inputs on success
+            document.querySelectorAll('input').forEach(i => i.value = '');
+        })
+        .catch(err => {
+            msgDiv.innerText = "❌ Error adding crop";
+            msgDiv.style.color = "#ff5e57";
+            msgDiv.style.background = "rgba(255, 94, 87, 0.1)";
+        });
+    }
+
+    const seller = localStorage.getItem("username");
+    fetch(`http://localhost:5000/api/seller-orders/${seller}`)
+        .then(res => res.json())
+        .then(data => {
+            console.log("Current Seller Orders:", data);
+        });
+
+    function logout(){
+        localStorage.removeItem("username");
+        window.location.href = "login.html";
+    }
+</script>
+
+</body>
+</html>

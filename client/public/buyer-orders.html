@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>My Orders</title>
+</head>
+<body>
+
+<h1>My Orders</h1>
+<div id="orders"></div>
+
+<script>
+
+const username = localStorage.getItem("username");
+
+fetch(`http://localhost:5000/api/buyer-orders/${username}`)
+.then(res => res.json())
+.then(data => {
+
+  const container = document.getElementById("orders");
+
+  data.forEach(order => {
+    container.innerHTML += `
+      <div>
+        <h3>${order.cropName}</h3>
+        <p>Qty: ${order.quantity}</p>
+        <p>Total: ₹${order.totalAmount}</p>
+        <hr>
+      </div>
+    `;
+  });
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contact | TradeSphere</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0a2e18;
+            --accent: #00ff87;
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --border: rgba(255, 255, 255, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background-color: #0a2e18;
+            background-image: 
+                radial-gradient(at 0% 0%, hsla(145,72%,39%,1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, hsla(168,84%,45%,1) 0px, transparent 50%);
+            display: flex;
+            flex-direction: column;
+            color: white;
+        }
+
+        /* --- Navbar --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 8%;
+            background: rgba(10, 46, 24, 0.6);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo span { color: var(--accent); }
+
+        nav a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            margin-left: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        nav a:hover { color: var(--accent); }
+
+        /* --- Main Container --- */
+        .container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px;
+        }
+
+        /* --- Contact Card --- */
+        .contact-card {
+            display: flex;
+            width: 1000px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px) saturate(180%);
+            border-radius: 30px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.4);
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Left Info Section --- */
+        .info {
+            flex: 1;
+            padding: 60px;
+            background: rgba(0, 0, 0, 0.2);
+            border-right: 1px solid var(--border);
+        }
+
+        .info h2 {
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 25px;
+            letter-spacing: -1px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .info-item span {
+            background: rgba(0, 255, 135, 0.1);
+            color: var(--accent);
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .info p.description {
+            margin-top: 40px;
+            font-size: 15px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* --- Form Section --- */
+        .form-section {
+            flex: 1.2;
+            padding: 60px;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .form-section h2 {
+            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 16px 20px;
+            margin-bottom: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 14px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s ease;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--accent);
+            background: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 15px rgba(0, 255, 135, 0.1);
+        }
+
+        textarea {
+            resize: none;
+            height: 150px;
+        }
+
+        button {
+            width: 100%;
+            padding: 18px;
+            margin-top: 10px;
+            background: var(--accent);
+            color: var(--primary);
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 20px rgba(0, 255, 135, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            background: #fff;
+            box-shadow: 0 15px 30px rgba(0, 255, 135, 0.3);
+        }
+
+        /* Responsive */
+        @media(max-width: 900px){
+            .contact-card {
+                flex-direction: column;
+                margin: 20px;
+            }
+            .info { border-right: none; border-bottom: 1px solid var(--border); padding: 40px; }
+            .form-section { padding: 40px; }
+            nav { padding: 20px 5%; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">🌾 Trade<span>Sphere</span></div>
+    <div>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact.html">Contact</a>
+        <a href="login.html">Login</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <div class="contact-card">
+
+        <div class="info">
+            <h2>Get in Touch</h2>
+            
+            <div class="info-item">
+                <span>📍</span> India
+            </div>
+            <div class="info-item">
+                <span>📧</span> support@tradesphere.com
+            </div>
+            <div class="info-item">
+                <span>📞</span> +91 98765 43210
+            </div>
+
+            <p class="description">
+                Our support team is available 24/7 to assist farmers with listings and help buyers find the best harvests in the region.
+            </p>
+        </div>
+
+        <div class="form-section">
+            <h2>Send a Message</h2>
+            <input type="text" placeholder="Full Name">
+            <input type="email" placeholder="Email Address">
+            <textarea placeholder="How can we help you?"></textarea>
+            <button>Send Message →</button>
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

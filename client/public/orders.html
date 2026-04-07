@@ -1,0 +1,12 @@
+
+
+fetch("http://localhost:5000/api/order", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    username: localStorage.getItem("username"),
+    crop: cropValue,
+    quantity: quantityValue,
+    price: priceValue
+  })
+});
