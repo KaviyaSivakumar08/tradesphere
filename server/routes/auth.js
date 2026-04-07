@@ -1,33 +1,58 @@
 const express = require("express");
 const router = express.Router();
-const users = require("../data/users");
+const User = require("../models/User");
 
-// REGISTER
-router.post("/register", (req, res) => {
+// ================= REGISTER =================
+router.post("/register", async (req, res) => {
   const { username, password } = req.body;
 
-  const exists = users.find(u => u.username === username);
-  if (exists) {
-    return res.status(400).json({ message: "User already exists" });
-  }
+  try {
+    // Check if user already exists
+    const existingUser = await User.findOne({ username });
 
-  users.push({ username, password });
-  res.json({ message: "Registration successful" });
+    if (existingUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    // Create new user
+    const newUser = new User({
+      username,
+      password
+    });
+
+    await newUser.save();
+
+    res.json({ message: "Registration successful" });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
 });
 
-// LOGIN
-router.post("/login", (req, res) => {
+
+// ================= LOGIN =================
+router.post("/login", async (req, res) => {
   const { username, password } = req.body;
 
-  const user = users.find(
-    u => u.username === username && u.password === password
-  );
+  try {
+    const user = await User.findOne({ username, password });
 
-  if (!user) {
-    return res.status(401).json({ message: "Invalid credentials" });
+    if (!user) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    res.json({
+      message: "Login successful",
+      user: {
+        username: user.username
+      }
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
   }
-
-  res.json({ message: "Login successful", username });
 });
 
 module.exports = router;
